@@ -154,10 +154,10 @@
                     <tr id="blendsTableHeader">
                         <th>Nome</th>
                         <th>Insumos</th>
-                        <th>Custo Base (R$/kg)</th>
+                        <th>Preço/Kg</th>
                         <th>Mão de Obra (R$)</th>
+                        <th>Rótulos (R$)</th>
                         <th>Lucro (%)</th>
-                        <!-- Colunas de embalagens serão adicionadas dinamicamente -->
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -173,7 +173,7 @@
                     <tr>
                         <th>Nome</th>
                         <th>Peso (kg)</th>
-                        <th>Valor (R$)</th>
+                        <th>Preço (R$)</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -188,10 +188,10 @@
                 <thead>
                     <tr>
                         <th>Nome</th>
-                        <th>Peso do Blend (kg)</th>
+                        <th>Peso (kg)</th>
                         <th>Quantidade</th>
                         <th>Preço (R$)</th>
-                        <th>Valor do Frete (R$)</th>
+                        <th>Frete (R$)</th>
                         <th>Preço Uni. (R$)</th>
                         <th>Ações</th>
                     </tr>
@@ -213,7 +213,7 @@
                     <form id="insumoForm">
                         <input type="hidden" id="insumoIndex">
                         <div class="mb-4">
-                            <label for="nomeInsumo" class="form-label">Nome do Insumo</label>
+                            <label for="nomeInsumo" class="form-label">Insumo</label>
                             <input type="text" class="form-control" id="nomeInsumo" required>
                         </div>
                         <div class="grid grid-cols-2 gap-4 mb-4">
@@ -222,14 +222,16 @@
                                 <input type="text" class="form-control" id="pesoInsumo" placeholder="0,000" required>
                             </div>
                             <div>
-                                <label for="valorInsumo" class="form-label">Valor (R$)</label>
+                                <label for="valorInsumo" class="form-label">Preço (R$)</label>
                                 <input type="text" class="form-control" id="valorInsumo" placeholder="R$ 0,00" required>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary w-full">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>
-                            Salvar Insumo
-                        </button>
+                        <div class="flex justify-center mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>
+                                Salvar Insumo
+                            </button>
+                        </div>
                         <p id="insumoMessage" class="mt-3"></p>
                     </form>
                 </div>
@@ -257,20 +259,26 @@
                             <div id="insumosSelecao" class="flex flex-wrap gap-2"></div>
                         </div>
                         <div id="insumosBlend" class="mb-4"></div>
-                        <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div class="grid grid-cols-3 gap-4 mb-4">
                             <div>
                                 <label for="maoDeObra" class="form-label">Mão de Obra (R$)</label>
                                 <input type="text" class="form-control" id="maoDeObra" placeholder="R$ 0,00" required>
+                            </div>
+                            <div>
+                                <label for="rotulos" class="form-label">Rótulos (R$)</label>
+                                <input type="text" class="form-control" id="rotulos" placeholder="R$ 0,00" required>
                             </div>
                             <div>
                                 <label for="lucro" class="form-label">Lucro (%)</label>
                                 <input type="text" class="form-control" id="lucro" placeholder="0" required>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary w-full" id="blendSubmit">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>
-                            Salvar Blend
-                        </button>
+                        <div class="flex justify-center mt-4">
+                            <button type="submit" class="btn btn-primary" id="blendSubmit">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>
+                                Salvar Blend
+                            </button>
+                        </div>
                         <p id="blendMessage" class="mt-3"></p>
                     </form>
                 </div>
@@ -290,12 +298,12 @@
                     <form id="embalagemForm">
                         <input type="hidden" id="embalagemIndex">
                         <div class="mb-4">
-                            <label for="nomeEmbalagem" class="form-label">Nome da Embalagem</label>
+                            <label for="nomeEmbalagem" class="form-label">Nome</label>
                             <input type="text" class="form-control" id="nomeEmbalagem" required>
                         </div>
                         <div class="grid grid-cols-2 gap-4 mb-4">
                             <div>
-                                <label for="pesoBlendEmbalagem" class="form-label">Peso do Blend (kg)</label>
+                                <label for="pesoBlendEmbalagem" class="form-label">Peso (kg)</label>
                                 <input type="text" class="form-control" id="pesoBlendEmbalagem" placeholder="0,000" required>
                             </div>
                             <div>
@@ -309,14 +317,16 @@
                                 <input type="text" class="form-control" id="precoEmbalagem" placeholder="R$ 0,00" required>
                             </div>
                             <div>
-                                <label for="freteEmbalagem" class="form-label">Valor do Frete (R$)</label>
+                                <label for="freteEmbalagem" class="form-label">Frete (R$)</label>
                                 <input type="text" class="form-control" id="freteEmbalagem" placeholder="R$ 0,00" required>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary w-full">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>
-                            Salvar Embalagem
-                        </button>
+                        <div class="flex justify-center mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>
+                                Salvar Embalagem
+                            </button>
+                        </div>
                         <p id="embalagemMessage" class="mt-3"></p>
                     </form>
                 </div>
@@ -417,6 +427,7 @@
         configurarInputFormatado('pesoInsumo', true);
         configurarInputFormatado('valorInsumo', false, true);
         configurarInputFormatado('maoDeObra', false, true);
+        configurarInputFormatado('rotulos', false, true);
         configurarInputFormatado('lucro', false, false, true);
         configurarInputFormatado('pesoBlendEmbalagem', true);
         configurarInputFormatado('quantidadeEmbalagem', false, false, true);
@@ -650,6 +661,7 @@
             const index = document.getElementById('blendIndex').value;
             const nome = document.getElementById('nomeBlend').value;
             const maoDeObra = parsearInput(document.getElementById('maoDeObra').value);
+            const rotulos = parsearInput(document.getElementById('rotulos').value);
             const lucro = parseInt(document.getElementById('lucro').value) || 0;
 
             let totalPercentual = 0;
@@ -664,11 +676,11 @@
                 }
             });
 
-            if (nome && totalPercentual === 100 && maoDeObra >= 0 && lucro >= 0 && insumosSelecionados.length > 0) {
+            if (nome && totalPercentual === 100 && maoDeObra >= 0 && rotulos >= 0 && lucro >= 0 && insumosSelecionados.length > 0) {
                 const custo = insumosSelecionados.reduce((acc, insumo) => {
-                    return acc + (insumo.valor / insumo.peso);
+                    return acc + (insumo.valor / insumo.peso) * (insumo.percentual / 100);
                 }, 0);
-                const blend = { nome, insumos: insumosSelecionados, custo, maoDeObra, lucro };
+                const blend = { nome, insumos: insumosSelecionados, custo, maoDeObra, rotulos, lucro };
                 if (index !== '') {
                     blends[index] = blend;
                 } else {
@@ -695,9 +707,10 @@
             document.getElementById('blendIndex').value = index;
             document.getElementById('nomeBlend').value = blend.nome;
             document.getElementById('maoDeObra').value = formatarMoeda(blend.maoDeObra).replace('R$ ', 'R$');
+            document.getElementById('rotulos').value = formatarMoeda(blend.rotulos).replace('R$ ', 'R$');
             document.getElementById('lucro').value = parseInt(blend.lucro);
             document.getElementById('blendModalLabel').textContent = 'Editar Blend';
-            document.getElementById('blendSubmit').textContent = 'Salvar Alterações';
+            document.getElementById('blendSubmit').textContent = 'Salvar Blend';
             sliderValues = {};
             blend.insumos.forEach(insumo => {
                 const idx = insumos
@@ -726,8 +739,9 @@
             let headerHTML = `
                 <th>Nome</th>
                 <th>Insumos</th>
-                <th>Custo Base (R$/kg)</th>
+                <th>Preço/Kg</th>
                 <th>Mão de Obra (R$)</th>
+                <th>Rótulos (R$)</th>
                 <th>Lucro (%)</th>
             `;
             embalagens
@@ -749,6 +763,7 @@
                         <td>${insumosList}</td>
                         <td>${formatarMoeda(blend.custo)}</td>
                         <td>${formatarMoeda(blend.maoDeObra)}</td>
+                        <td>${formatarMoeda(blend.rotulos)}</td>
                         <td>${formatarLucro(blend.lucro)}</td>
                     `;
                     embalagens
@@ -756,7 +771,7 @@
                         .forEach(embalagem => {
                             const precoUnitario = embalagem.quantidade > 0 ? (embalagem.preco + embalagem.frete) / embalagem.quantidade : 0;
                             const custoBlend = blend.custo * embalagem.pesoBlend;
-                            const valorFinal = (custoBlend + blend.maoDeObra + precoUnitario) * (1 + blend.lucro / 100);
+                            const valorFinal = (custoBlend + blend.maoDeObra + blend.rotulos + precoUnitario) * (1 + blend.lucro / 100);
                             rowHTML += `<td>${formatarMoeda(valorFinal)}</td>`;
                         });
                     rowHTML += `
