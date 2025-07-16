@@ -48,6 +48,11 @@
         .btn-primary:focus {
             outline: none;
             box-shadow: 0 0 0 0.2rem rgba(241, 195, 167, 0.4);
+            background-color: #925353;
+        }
+        .btn-primary:active {
+            background-color: #621212 !important;
+            border-color: #621212;
         }
         .btn-action {
             background: none;
@@ -251,7 +256,7 @@
                     <form id="blendForm">
                         <input type="hidden" id="blendIndex">
                         <div class="mb-4">
-                            <label for="nomeBlend" class="form-label">Nome do Blend</label>
+                            <label for="nomeBlend" class="form-label">Blend</label>
                             <input type="text" class="form-control" id="nomeBlend" required>
                         </div>
                         <div class="mb-4">
@@ -276,7 +281,7 @@
                         <div class="flex justify-center mt-4">
                             <button type="submit" class="btn btn-primary" id="blendSubmit">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>
-                                Salvar Blend
+                                <span id="blendSubmitText">Salvar Blend</span>
                             </button>
                         </div>
                         <p id="blendMessage" class="mt-3"></p>
@@ -298,7 +303,7 @@
                     <form id="embalagemForm">
                         <input type="hidden" id="embalagemIndex">
                         <div class="mb-4">
-                            <label for="nomeEmbalagem" class="form-label">Nome</label>
+                            <label for="nomeEmbalagem" class="form-label">Embalagem</label>
                             <input type="text" class="form-control" id="nomeEmbalagem" required>
                         </div>
                         <div class="grid grid-cols-2 gap-4 mb-4">
@@ -692,7 +697,7 @@
                 sliderValues = {};
                 document.getElementById('blendIndex').value = '';
                 document.getElementById('blendModalLabel').textContent = 'Criar Blend';
-                document.getElementById('blendSubmit').textContent = 'Salvar Blend';
+                document.getElementById('blendSubmitText').textContent = 'Salvar Blend';
                 atualizarInsumosSelecao();
                 atualizarBlendsTable();
                 setTimeout(() => bootstrap.Modal.getInstance(document.getElementById('blendModal')).hide(), 1000);
@@ -710,7 +715,7 @@
             document.getElementById('rotulos').value = formatarMoeda(blend.rotulos).replace('R$ ', 'R$');
             document.getElementById('lucro').value = parseInt(blend.lucro);
             document.getElementById('blendModalLabel').textContent = 'Editar Blend';
-            document.getElementById('blendSubmit').textContent = 'Salvar Blend';
+            document.getElementById('blendSubmitText').textContent = 'Salvar Blend';
             sliderValues = {};
             blend.insumos.forEach(insumo => {
                 const idx = insumos
@@ -808,7 +813,7 @@
                 document.getElementById('blendForm').reset();
                 document.getElementById('blendIndex').value = '';
                 document.getElementById('blendModalLabel').textContent = 'Criar Blend';
-                document.getElementById('blendSubmit').textContent = 'Salvar Blend';
+                document.getElementById('blendSubmitText').textContent = 'Salvar Blend';
                 document.getElementById('blendMessage').innerHTML = '';
                 sliderValues = {};
                 atualizarInsumosSelecao();
