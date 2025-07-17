@@ -161,7 +161,6 @@
                         <th>Insumos</th>
                         <th>Preço/Kg</th>
                         <th>Mão de Obra (R$)</th>
-                        <th>Rótulos (R$)</th>
                         <th>Lucro (%)</th>
                         <th>Ações</th>
                     </tr>
@@ -197,6 +196,7 @@
                         <th>Quantidade</th>
                         <th>Preço (R$)</th>
                         <th>Frete (R$)</th>
+                        <th>Rótulos (R$)</th>
                         <th>Preço Uni. (R$)</th>
                         <th>Ações</th>
                     </tr>
@@ -264,14 +264,10 @@
                             <div id="insumosSelecao" class="flex flex-wrap gap-2"></div>
                         </div>
                         <div id="insumosBlend" class="mb-4"></div>
-                        <div class="grid grid-cols-3 gap-4 mb-4">
+                        <div class="grid grid-cols-2 gap-4 mb-4">
                             <div>
                                 <label for="maoDeObra" class="form-label">Mão de Obra (R$)</label>
                                 <input type="text" class="form-control" id="maoDeObra" placeholder="R$ 0,00" required>
-                            </div>
-                            <div>
-                                <label for="rotulos" class="form-label">Rótulos (R$)</label>
-                                <input type="text" class="form-control" id="rotulos" placeholder="R$ 0,00" required>
                             </div>
                             <div>
                                 <label for="lucro" class="form-label">Lucro (%)</label>
@@ -316,7 +312,7 @@
                                 <input type="text" class="form-control" id="quantidadeEmbalagem" placeholder="0" required>
                             </div>
                         </div>
-                        <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div class="grid grid-cols-3 gap-4 mb-4">
                             <div>
                                 <label for="precoEmbalagem" class="form-label">Preço (R$)</label>
                                 <input type="text" class="form-control" id="precoEmbalagem" placeholder="R$ 0,00" required>
@@ -324,6 +320,10 @@
                             <div>
                                 <label for="freteEmbalagem" class="form-label">Frete (R$)</label>
                                 <input type="text" class="form-control" id="freteEmbalagem" placeholder="R$ 0,00" required>
+                            </div>
+                            <div>
+                                <label for="rotulosEmbalagem" class="form-label">Rótulos (R$)</label>
+                                <input type="text" class="form-control" id="rotulosEmbalagem" placeholder="R$ 0,00" required>
                             </div>
                         </div>
                         <div class="flex justify-center mt-4">
@@ -432,12 +432,12 @@
         configurarInputFormatado('pesoInsumo', true);
         configurarInputFormatado('valorInsumo', false, true);
         configurarInputFormatado('maoDeObra', false, true);
-        configurarInputFormatado('rotulos', false, true);
         configurarInputFormatado('lucro', false, false, true);
         configurarInputFormatado('pesoBlendEmbalagem', true);
         configurarInputFormatado('quantidadeEmbalagem', false, false, true);
         configurarInputFormatado('precoEmbalagem', false, true);
         configurarInputFormatado('freteEmbalagem', false, true);
+        configurarInputFormatado('rotulosEmbalagem', false, true);
 
         // Salvar dados no localStorage
         function salvarDados() {
@@ -514,9 +514,10 @@
             const quantidade = parseInt(document.getElementById('quantidadeEmbalagem').value);
             const preco = parsearInput(document.getElementById('precoEmbalagem').value);
             const frete = parsearInput(document.getElementById('freteEmbalagem').value);
+            const rotulos = parsearInput(document.getElementById('rotulosEmbalagem').value);
 
-            if (nome && pesoBlend > 0 && quantidade > 0 && preco >= 0 && frete >= 0) {
-                const embalagem = { nome, pesoBlend, quantidade, preco, frete };
+            if (nome && pesoBlend > 0 && quantidade > 0 && preco >= 0 && frete >= 0 && rotulos >= 0) {
+                const embalagem = { nome, pesoBlend, quantidade, preco, frete, rotulos };
                 if (index !== '') {
                     embalagens[index] = embalagem;
                 } else {
@@ -567,7 +568,7 @@
             embalagens
                 .sort((a, b) => a.nome.localeCompare(b.nome))
                 .forEach((embalagem, index) => {
-                    const precoUnitario = embalagem.quantidade > 0 ? (embalagem.preco + embalagem.frete) / embalagem.quantidade : 0;
+                    const precoUnitario = embalagem.quantidade > 0 ? (embalagem.preco + embalagem.frete) / embalagem.quantidade + embalagem.rotulos : embalagem.rotulos;
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td>${embalagem.nome}</td>
@@ -575,6 +576,7 @@
                         <td>${formatarQuantidade(embalagem.quantidade)}</td>
                         <td>${formatarMoeda(embalagem.preco)}</td>
                         <td>${formatarMoeda(embalagem.frete)}</td>
+                        <td>${formatarMoeda(embalagem.rotulos)}</td>
                         <td>${formatarMoeda(precoUnitario)}</td>
                         <td>
                             <button class="btn-action btn-edit" onclick="editarEmbalagem(${index})">
@@ -609,6 +611,7 @@
             document.getElementById('quantidadeEmbalagem').value = formatarQuantidade(embalagem.quantidade);
             document.getElementById('precoEmbalagem').value = formatarMoeda(embalagem.preco).replace('R$ ', 'R$');
             document.getElementById('freteEmbalagem').value = formatarMoeda(embalagem.frete).replace('R$ ', 'R$');
+            document.getElementById('rotulosEmbalagem').value = formatarMoeda(embalagem.rotulos).replace('R$ ', 'R$');
             document.getElementById('embalagemModalLabel').textContent = 'Editar Embalagem';
             new bootstrap.Modal(document.getElementById('embalagemModal')).show();
         }
@@ -666,7 +669,6 @@
             const index = document.getElementById('blendIndex').value;
             const nome = document.getElementById('nomeBlend').value;
             const maoDeObra = parsearInput(document.getElementById('maoDeObra').value);
-            const rotulos = parsearInput(document.getElementById('rotulos').value);
             const lucro = parseInt(document.getElementById('lucro').value) || 0;
 
             let totalPercentual = 0;
@@ -681,11 +683,11 @@
                 }
             });
 
-            if (nome && totalPercentual === 100 && maoDeObra >= 0 && rotulos >= 0 && lucro >= 0 && insumosSelecionados.length > 0) {
+            if (nome && totalPercentual === 100 && maoDeObra >= 0 && lucro >= 0 && insumosSelecionados.length > 0) {
                 const custo = insumosSelecionados.reduce((acc, insumo) => {
                     return acc + (insumo.valor / insumo.peso) * (insumo.percentual / 100);
                 }, 0);
-                const blend = { nome, insumos: insumosSelecionados, custo, maoDeObra, rotulos, lucro };
+                const blend = { nome, insumos: insumosSelecionados, custo, maoDeObra, lucro };
                 if (index !== '') {
                     blends[index] = blend;
                 } else {
@@ -712,7 +714,6 @@
             document.getElementById('blendIndex').value = index;
             document.getElementById('nomeBlend').value = blend.nome;
             document.getElementById('maoDeObra').value = formatarMoeda(blend.maoDeObra).replace('R$ ', 'R$');
-            document.getElementById('rotulos').value = formatarMoeda(blend.rotulos).replace('R$ ', 'R$');
             document.getElementById('lucro').value = parseInt(blend.lucro);
             document.getElementById('blendModalLabel').textContent = 'Editar Blend';
             document.getElementById('blendSubmitText').textContent = 'Salvar Blend';
@@ -746,7 +747,6 @@
                 <th>Insumos</th>
                 <th>Preço/Kg</th>
                 <th>Mão de Obra (R$)</th>
-                <th>Rótulos (R$)</th>
                 <th>Lucro (%)</th>
             `;
             embalagens
@@ -768,15 +768,14 @@
                         <td>${insumosList}</td>
                         <td>${formatarMoeda(blend.custo)}</td>
                         <td>${formatarMoeda(blend.maoDeObra)}</td>
-                        <td>${formatarMoeda(blend.rotulos)}</td>
                         <td>${formatarLucro(blend.lucro)}</td>
                     `;
                     embalagens
                         .sort((a, b) => a.nome.localeCompare(b.nome))
                         .forEach(embalagem => {
-                            const precoUnitario = embalagem.quantidade > 0 ? (embalagem.preco + embalagem.frete) / embalagem.quantidade : 0;
+                            const precoUnitario = embalagem.quantidade > 0 ? (embalagem.preco + embalagem.frete) / embalagem.quantidade + embalagem.rotulos : embalagem.rotulos;
                             const custoBlend = blend.custo * embalagem.pesoBlend;
-                            const valorFinal = (custoBlend + blend.maoDeObra + blend.rotulos + precoUnitario) * (1 + blend.lucro / 100);
+                            const valorFinal = (custoBlend + blend.maoDeObra + precoUnitario) * (1 + blend.lucro / 100);
                             rowHTML += `<td>${formatarMoeda(valorFinal)}</td>`;
                         });
                     rowHTML += `
